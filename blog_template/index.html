@@ -223,7 +223,8 @@
               <b style="font-size:16px">Outline</b><br><br>
               <a href="#intro">Introduction</a><br><br>
 			  <a href="#background">Background </a><br><br>
-              <a href="#cifar_10">CIFAR-10</a><br><br>
+			  <a href="#hypothesis">Hypothesis </a><br><br>
+              <a href="#dataset">ImageNette and CIFAR-10</a><br><br>
 			  <a href="#methods">Methods</a><br><br>
 			  <a href="#energy_based_dropout">Energy-based Dropout </a><br><br>
 			  <a href="#hebbian_based">Hebbian-based </a><br><br>
@@ -250,7 +251,7 @@
             <p>Motivate your project. What question are you asking. Why is it unanswered so far? What gap in the literature or practice are you filling?
             Why is it important?</p>
 
-			<p>Most Modern deep learning models are overparameterized, leading to inefficiencies in computation and memory usage. However, biological neural networks, such as the human brain, achieves efficient computation by pruning unused synapses, strengthen relevant ones, and maintain sparse connectivity while still supporting flexible computation. So based on such a huge difference between the two, we wondered if principles from biological neural circuits guide more efficient forms of dropout and pruning in deep learning models. In particular, we were inspired by synaptic pruning, a process in which redundant or weak synaptic connections are eliminated during brain development to enhance network efficiency and functionality.
+			<p>Most modern deep learning models are overparameterized, leading to inefficiencies in computation and memory usage. However, biological neural networks, such as the human brain, achieves efficient computation by pruning unused synapses, strengthen relevant ones, and maintain sparse connectivity while still supporting flexible computation. So based on such a huge difference between the two, we wondered if principles from biological neural circuits guide more efficient forms of dropout and pruning in deep learning models. In particular, we were inspired by synaptic pruning, a process in which redundant or weak synaptic connections are eliminated during brain development to enhance network efficiency and functionality.
 			<p><b>Question:</b> Can biologically inspired dropout and pruning rules make deep networks more efficient without sacrificing accuracy? (idk i think the question has to be more specific)</p>
 			<p>Despite a growing interest in sparsity, existing work mostly focuses on either random dropout or magnitude-based pruning. Less attention has been given to biologically inspired methods that mimic synaptic pruning and other neural mechanisms such as energy-based, Hebbian-based, and structured pruning. These ideas are discussed in the neuroscience literature, but have not been systematically compared within the same deep learning setting. As a result, it remains unclear whether biologically motivated rules actually offer practical advantages over standard techniques.  </p>
 			<p>Our project addresses this gap by evaluating several biologically inspired dropout and pruning strategies side-by-side on CIFAR-10 and ImageNette. We aim to test whether these mechanisms lead to better sparsity–accuracy trade-offs, more stable internal representations, or more efficient use of parameters.  </p>
@@ -274,11 +275,32 @@
 		    </div>
 		</div>
 
-		<div class="content-margin-container" id="cifar_10">
+	<div class="content-margin-container" id="hypothesis">
 				<div class="margin-left-block">
 				</div>
 		    <div class="main-content-block">
-					<h1>CIFAR-10</h1>
+					<h1>Hypothesis</h1>
+					<p><b> idk if we actually need a hypothesis part. like it makes sense to put one but its a blog post so idk also most other ppl dont have it. i found one person who had proposal</b></p>
+				  This project tests whether biologically inspired dropout and pruning methods can improve the efficiency of deep learning models. We hypothesize that: <br><br>
+				  1. Biologically inspired dropout methods (e.g., energy-based, Hebbian-based) will lead to better generalization compared to standard random dropout, especially at high sparsity levels.<br><br>
+				  2. Biologically inspired pruning methods will achieve similar or better accuracy than magnitude-based pruning at equivalent sparsity, due to their ability to preserve important synaptic connections.<br><br>
+				  3. Networks trained with biologically inspired methods will exhibit more stable internal representations, as measured by lower representational drift over training.<br><br>
+				  4. Combining biologically inspired dropout and pruning will yield synergistic effects, resulting in more efficient models without sacrificing accuracy.<br><br>
+
+				  Our experiments on CIFAR-10 and ImageNette will evaluate these hypotheses by comparing accuracy, sparsity, and representation stability across different dropout and pruning schemes. We expect biologically inspired methods to outperform standard techniques, demonstrating the value of neuroscience principles in deep learning.<br><br>
+
+
+		    </div>
+		    <div class="margin-right-block" style="transform: translate(0%, -100%);"> <!-- you can move the margin notes up and down with translate -->
+          Interestingly, Plato also asked if X does Y, in <a href="#ref_1">[1]</a>.
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="dataset">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+					<h1>ImageNette and CIFAR-10</h1>
 				  Info about which data we used and why? <br><br>
 
 
