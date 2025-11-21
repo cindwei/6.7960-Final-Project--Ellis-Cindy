@@ -29,7 +29,7 @@
 		border-left: 1px solid #DDD;
 		border-right: 1px solid #DDD;
 		padding: 8px 8px 8px 8px;
-		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", "Avenir", sans-serif;
 	}
 	.margin-left-block {
 			font-size: 14px;
@@ -38,11 +38,11 @@
 			position: relative;
 			margin-left: 10px;
 			text-align: left;
-			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", "Avenir", sans-serif;
 			padding: 5px;
 	}
 	.margin-right-block {
-			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", "Avenir", sans-serif;
 			font-size: 14px;
 			width: 25%; /* Change this percentage as needed */
 			max-width: 256px; /* Optional: Maximum width */
@@ -222,12 +222,14 @@
           <div style="position:fixed; max-width:inherit; top:max(20%,120px)">
               <b style="font-size:16px">Outline</b><br><br>
               <a href="#intro">Introduction</a><br><br>
+			  <a href="#background">Background </a><br><br>
               <a href="#cifar_10">CIFAR-10</a><br><br>
 			  <a href="#methods">Methods</a><br><br>
 			  <a href="#energy_based_dropout">Energy-based Dropout </a><br><br>
 			  <a href="#hebbian_based">Hebbian-based </a><br><br>
 			  <a href="#magnitude_based">Magnitude-based </a><br><br>
 			  <a href="#structure_based">Structure-based </a><br><br>
+			  <a href="#analysis">Analysis and Results </a><br><br>
               <a href="#implications_and_limitations">Implications and limitations</a><br><br>
           </div>
 				</div>
@@ -245,11 +247,30 @@
 				</div>
 		    <div class="main-content-block">
 						<h1>Introduction</h1>
-            Motivate your project. What question are you asking. Why is it unanswered so far? What gap in the literature or practice are you filling?
-            Why is it important?
+            <p>Motivate your project. What question are you asking. Why is it unanswered so far? What gap in the literature or practice are you filling?
+            Why is it important?</p>
+
+			<p>Most Modern deep learning models are overparameterized, leading to inefficiencies in computation and memory usage. However, biological neural networks, such as the human brain, achieves efficient computation by pruning unused synapses, strengthen relevant ones, and maintain sparse connectivity while still supporting flexible computation. So based on such a huge difference between the two, we wondered if principles from biological neural circuits guide more efficient forms of dropout and pruning in deep learning models. In particular, we were inspired by synaptic pruning, a process in which redundant or weak synaptic connections are eliminated during brain development to enhance network efficiency and functionality.
+			<p><b>Question:</b> Can biologically inspired dropout and pruning rules make deep networks more efficient without sacrificing accuracy? (idk i think the question has to be more specific)</p>
+			<p>Despite a growing interest in sparsity, existing work mostly focuses on either random dropout or magnitude-based pruning. Less attention has been given to biologically inspired methods that mimic synaptic pruning and other neural mechanisms such as energy-based, Hebbian-based, and structured pruning. These ideas are discussed in the neuroscience literature, but have not been systematically compared within the same deep learning setting. As a result, it remains unclear whether biologically motivated rules actually offer practical advantages over standard techniques.  </p>
+			<p>Our project addresses this gap by evaluating several biologically inspired dropout and pruning strategies side-by-side on CIFAR-10 and ImageNette. We aim to test whether these mechanisms lead to better sparsity–accuracy trade-offs, more stable internal representations, or more efficient use of parameters.  </p>
+			<p>Our goal is not only to compare performance across different pruning and dropout schemes, but also to understand the behaviors that emerge from each such as how they alter network structure and what they reveal about the relationship between biological and artificial neural systems. Ultimately, we hope this work will provide insights into how principles from neuroscience can inform the design of more efficient and robust deep learning architectures.</p>
 		    </div>
 		    <div class="margin-right-block">
 						Margin note that clarifies some detail #main-content-block for intro section.
+		    </div>
+		</div>
+	<div class="content-margin-container" id="background">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+					<h1>Background</h1>
+				  the background information about synaptic pruning and other related work. so basically literature review should go here.<br><br>
+
+
+		    </div>
+		    <div class="margin-right-block" style="transform: translate(0%, -100%);"> <!-- you can move the margin notes up and down with translate -->
+          Interestingly, Plato also asked if X does Y, in <a href="#ref_1">[1]</a>.
 		    </div>
 		</div>
 
@@ -258,7 +279,7 @@
 				</div>
 		    <div class="main-content-block">
 					<h1>CIFAR-10</h1>
-				  Info about our data how we worked on it. basic info about method<br><br>
+				  Info about which data we used and why? <br><br>
 
 
 		    </div>
@@ -272,8 +293,7 @@
 				</div>
 		    <div class="main-content-block">
 						<h1>Methods</h1>
-            Motivate your project. What question are you asking. Why is it unanswered so far? What gap in the literature or practice are you filling?
-            Why is it important?
+            what kind of methods did we use. We should describe simply about the energy-based dropout, hebbian-based, magnitude-based, structure-based pruning methods.
 		    </div>
 		    <div class="margin-right-block">
 						Margin note that clarifies some detail #main-content-block for intro section.
@@ -346,13 +366,23 @@
 					A caption for the video could go here.
 		    </div>
 		</div>
+	<div class="content-margin-container" id="analysis">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Analysis and Results</h1>
+						compare all the methods and show the results.
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
 
 		<div class="content-margin-container" id="implications_and_limitations">
 				<div class="margin-left-block">
 				</div>
 		    <div class="main-content-block">
 						<h1>Implications and limitations</h1>
-						Let's end with some discussion of the implications and limitations.
+						Let's end with some discussion of the implications and limitations. so the conclusion section
 		    </div>
 		    <div class="margin-right-block">
 		    </div>
