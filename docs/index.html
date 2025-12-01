@@ -29,7 +29,7 @@
 		border-left: 1px solid #DDD;
 		border-right: 1px solid #DDD;
 		padding: 8px 8px 8px 8px;
-		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", "Avenir", sans-serif;
 	}
 	.margin-left-block {
 			font-size: 14px;
@@ -38,11 +38,11 @@
 			position: relative;
 			margin-left: 10px;
 			text-align: left;
-			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", "Avenir", sans-serif;
 			padding: 5px;
 	}
 	.margin-right-block {
-			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", "Avenir", sans-serif;
 			font-size: 14px;
 			width: 25%; /* Change this percentage as needed */
 			max-width: 256px; /* Optional: Maximum width */
@@ -222,7 +222,15 @@
           <div style="position:fixed; max-width:inherit; top:max(20%,120px)">
               <b style="font-size:16px">Outline</b><br><br>
               <a href="#intro">Introduction</a><br><br>
-              <a href="#does_x_do_y">Does X do Y?</a><br><br>
+			  <a href="#background">Background </a><br><br>
+			  <a href="#hypothesis">Hypothesis </a><br><br>
+              <a href="#dataset">ImageNette and CIFAR-10</a><br><br>
+			  <a href="#methods">Methods</a><br><br>
+			  <a href="#energy_based_dropout">Energy-based Dropout </a><br><br>
+			  <a href="#hebbian_based">Hebbian-based </a><br><br>
+			  <a href="#magnitude_based">Magnitude-based </a><br><br>
+			  <a href="#structure_based">Structure-based </a><br><br>
+			  <a href="#analysis">Analysis and Results </a><br><br>
               <a href="#implications_and_limitations">Implications and limitations</a><br><br>
           </div>
 				</div>
@@ -240,52 +248,205 @@
 				</div>
 		    <div class="main-content-block">
 						<h1>Introduction</h1>
-            Motivate your project. What question are you asking. Why is it unanswered so far? What gap in the literature or practice are you filling?
-            Why is it important?
+            <p><b>Motivate your project. What question are you asking. Why is it unanswered so far? What gap in the literature or practice are you filling?
+            Why is it important? in actual brain accounts for all factors .... use all of them concurrently to see if it does any better?</b></p>
+
+			<p>Most modern deep learning models are overparameterized, leading to inefficiencies in computation and memory usage. However, biological neural networks, such as the human brain, achieves efficient computation by pruning unused synapses, strengthen relevant ones, and maintain sparse connectivity while still supporting flexible computation. So based on such a huge difference between the two, we wondered if principles from biological neural circuits guide more efficient forms of dropout and pruning in deep learning models. In particular, we were inspired by synaptic pruning, a process in which redundant or weak synaptic connections are eliminated during brain development to enhance network efficiency and functionality.
+			<p><b>Question:</b> Can biologically inspired dropout and pruning rules make deep networks more efficient without sacrificing accuracy? (idk i think the question has to be more specific)</p>
+			<p>Despite a growing interest in sparsity, existing work mostly focuses on either random dropout or magnitude-based pruning. Less attention has been given to biologically inspired methods that mimic synaptic pruning and other neural mechanisms such as energy-based, Hebbian-based, and structured pruning. These ideas are discussed in the neuroscience literature, but have not been systematically compared within the same deep learning setting. As a result, it remains unclear whether biologically motivated rules actually offer practical advantages over standard techniques.  </p>
+			<p>Our project addresses this gap by evaluating several biologically inspired dropout and pruning strategies side-by-side on CIFAR-10 and ImageNette. We aim to test whether these mechanisms lead to better sparsity–accuracy trade-offs, more stable internal representations, or more efficient use of parameters.  </p>
+			<p>Our goal is not only to compare performance across different pruning and dropout schemes, but also to understand the behaviors that emerge from each such as how they alter network structure and what they reveal about the relationship between biological and artificial neural systems. Ultimately, we hope this work will provide insights into how principles from neuroscience can inform the design of more efficient and robust deep learning architectures.</p>
 		    </div>
 		    <div class="margin-right-block">
 						Margin note that clarifies some detail #main-content-block for intro section.
 		    </div>
 		</div>
-
-		<div class="content-margin-container" id="does_x_do_y">
+	<div class="content-margin-container" id="background">
 				<div class="margin-left-block">
 				</div>
 		    <div class="main-content-block">
-					<h1>Does X do Y?</h1>
-				  It is well known that Y does Y. And this has raised the question does X do Y? Because if Y does Y then it stands to reason that X does Y.
-          But we cannot answer this until we realize the Z implies Y and X can be linked to Z.<br><br>
+					<h1>Background</h1>
+					<b> should we separate related works and background info??</b>
+				  the background information about synaptic pruning and other related work. so basically literature review should go here.<br><br>
 
-          Now let's write some math!<br>
-          <center>
-            <math xmlns="http://www.w3.org/1998/Math/MathML">
-              <mrow>
-                <mrow>
-                  <mo>&#x2202;</mo>
-                  <mi>y</mi>
-                </mrow>
-                <mo>/</mo>
-                <mrow>
-                  <mo>&#x2202;</mo>
-                  <mi>x</mi>
-                </mrow>
-              </mrow>
-              <mo>=</mo>
-              <mi>x</mi>
-            </math>
-          </center>
-          <br>
-          It's probably best to ask an LLM to help do the web
-          formatting for math. You can tell it "convert this latex equation into MathML: $$\frac{\partial dy}{\partial dx} = x$$"
-          But it took me a few tries. So, if you get frustrated, you can embed an image of the equation, or use other packages for
-          rendering equations on webpages.
+
 		    </div>
 		    <div class="margin-right-block" style="transform: translate(0%, -100%);"> <!-- you can move the margin notes up and down with translate -->
           Interestingly, Plato also asked if X does Y, in <a href="#ref_1">[1]</a>.
 		    </div>
 		</div>
 
-		<div class="content-margin-container">
+	<div class="content-margin-container" id="hypothesis">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+					<h1>Hypothesis</h1>
+					<p><b> idk if we actually need a hypothesis part. like it makes sense to put one but its a blog post so idk also most other ppl dont have it. i found one person who had proposal</b></p>
+				  This project tests whether biologically inspired dropout and pruning methods can improve the efficiency of deep learning models. We hypothesize that: <br><br>
+				  1. Biologically inspired dropout methods (e.g., energy-based, Hebbian-based) will lead to better generalization compared to standard random dropout, especially at high sparsity levels.<br><br>
+				  2. Biologically inspired pruning methods will achieve similar or better accuracy than magnitude-based pruning at equivalent sparsity, due to their ability to preserve important synaptic connections.<br><br>
+				  3. Networks trained with biologically inspired methods will exhibit more stable internal representations, as measured by lower representational drift over training.<br><br>
+				  4. Combining biologically inspired dropout and pruning will yield synergistic effects, resulting in more efficient models without sacrificing accuracy.<br><br>
+
+				  Our experiments on CIFAR-10 and ImageNette will evaluate these hypotheses by comparing accuracy, sparsity, and representation stability across different dropout and pruning schemes. We expect biologically inspired methods to outperform standard techniques, demonstrating the value of neuroscience principles in deep learning.<br><br>
+
+
+		    </div>
+		    <div class="margin-right-block" style="transform: translate(0%, -100%);"> <!-- you can move the margin notes up and down with translate -->
+          Interestingly, Plato also asked if X does Y, in <a href="#ref_1">[1]</a>.
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="dataset">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+					<h1>ImageNette and CIFAR-10</h1>
+				  We used two image classification datasets for this project: ImageNette and CIFAR-10.  <br><br>
+				  <p><b> Why did we choose these datasets?</b></p>
+				  <p>ImageNette is a 10-class subset of ImageNet with higher resolution natural images. It trains quickly while still providing a realistic visual structure making it a convenient first test for comparing our pruning and dropout methods.</p>
+				  <p>CIFAR-10 is a widely used benchmark dataset consisting of 60,000 32x32 color images in 10 classes, with 50,000 training and 10.000 test images. Its small size and balanced classes makes it a standard benchmark for studying training dynamics and sparisity.</p>
+				  <p> Using both datasets helps us evaluate whether biologically inspired dropout and pruning behave consistently across different image resolutiions and levels of visual complexity.</p>
+
+
+		    </div>
+		    <div class="margin-right-block" style="transform: translate(0%, -100%);"> <!-- you can move the margin notes up and down with translate -->
+          Interestingly, Plato also asked if X does Y, in <a href="#ref_1">[1]</a>.
+		    </div>
+		</div>
+
+	<div class="content-margin-container" id="methods">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Methods</h1>
+						We follow a unified experimental pipeline designed to compare standard dropout with four biologically inspired pruning and dropout rules. To ensure fairness, all models are trained under identical conditions, and all pruning mechanisms follow the same pruning schedule. <br><br>
+						<p><b>Model Architecture</b></p>
+						<p> All experiements use a <b>[MODEL NAME]</b> archeitecture with <b>[SOMETHING PARAMETERS]</b>. The architecture consists of <b>[LAYERS???]</b>, followed by <b>[DO WE HAVE A CLASSIFIER??? if yes we should put it here]</b> The same model is used for every pruning and dropout method to ensure that differences in performance arise from the pruning strategy rather than model capacity.</p>
+
+						<p><b>Training Configuration</b></p>
+						<p>We begin by preparing ImageNette and CIFAR-10 using standard preprocessing steps. ImageNette images are resized to <b>[SIZE] × [SIZE]</b> and augmented with <b>[AUGMENTATIONS]</b>, while CIFAR-10 uses its native 32×32 format with <b>[AUGMENTATIONS]</b>. Each dataset is divided into training, validation, and test sets with <b>[SPLIT RATIOS]</b>.</p>
+						<p> Each model is trained using:</p>
+
+						<ul>
+							<li>Optimizer: <b>[IDK WHICH ONE]</b> </li>
+							<li>Initial Learning Rate: <b> [I ALSO DONT KNOW]</b> </li>
+							<li>Batch Size: <b>[IDK]</b></li>
+							<li>Number of Epochs: <b>[i feel like i should know this but i dont]</b> for ImageNette, <b>[this too]</b> for CIFAR-10</li>
+							<li> Weight Decay: <b>[IDK]</b> </li>
+							<li> Loss Function: <b>[IDK]</b></li>
+							<li> Learning Rate Schedule: <b>[DO WE HAVE ONE???]</b></li>
+							<li> Dropout Rate: <b>[IF WE HAVE DROPOUT]</b></li>
+							<li> Target Sparsity: <b>[DO WE HAVE A TARGET SPARSITY???]</b></li>
+							<li> Pruning Interval: <b>[HOW OFTEN DO WE PRUNE???]</b></li>
+							<li> Random Seeds: <b>[NUMBER OF SEEDS]</b></li>
+							<li> Dataset Augmentations: <b>[DO WE HAVE ANY???]</b></li>
+							<li> <b> [DO WE HAVE HYPERPARAMETERS????]</b></li>
+						</ul>
+						</p>
+						<p>Our experimental procedure proceeds in a structured sequence. First, we train a baseline model using standard dropout to establish reference performance and sparsity. We then train four biologically inspired methods (energy-based dropout, Hebbian dropout, magnitude-based pruning, and structured pruning) under the exact same training configuration.</p>
+						<p>During training, we track both sparsity and accuracy over time to observe how each pruning rule affects learning dynamics. After all runs are complete, we evaluate each method on final test accuracy, final sparsity, and training behavior. Finally, we compare the methods in terms of their learning trajectories and differences in representational stability.</p>
+						<p><b>Pruning Schedule</b></p>
+						<p>To ensure fairness, all pruning strategies follow the same overall schedule: a warm-up period of <b>[WARM-UP EPOCHS]</b> with no pruning, an active pruning phase from epochs <b>[START]</b> to <b>[END]</b>, and an optional fine-tuning period after epoch <b>[FREEZE EPOCH]</b> during which pruning masks are frozen. Specific pruning rules and mathematical definitions for each method are described in the following sections.</p>
+
+						<p><b>Evaluation Metrics</b></p>
+						<p>Each experiment is repeated for <b>[NUMBER]</b> random seeds to account for stochastic variation. We visualize the results using accuracy versus sparsity curves, loss trajectories, and comparisons of pruning progression. This methodology enables a consistent and interpretable comparison of how biologically inspired dropout and pruning mechanisms influence efficiency and performance.</p>
+
+
+						<p>* Any deviations required by a specific pruning role are noted in the method's individual section *</p>
+
+
+
+
+
+
+
+
+
+		    </div>
+		    <div class="margin-right-block">
+						Margin note that clarifies some detail #main-content-block for intro section.
+		    </div>
+		</div>
+
+	<div class="content-margin-container" id="energy_based_dropout">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Energy-based Dropout</h1>
+			<p><b> i should make this in results section and the different methods can be a subsection within.</b></p>
+            <p> Energy-based dropout removes units based on activity level. For each neuron <i>i</i>, we compute an "energy" term: </p>
+						<p style = "text-align: center;"> E<sub>i</sub> = <b>[EQUATION HERE]</b></p>
+						<p> This corresponds to the average activation, firing rate, or some other measure of neuron activity over a given period. <b> I SHOULD PROB SPECIFY WHAT THIS MEASURES LATER</b></p>
+						<p> A neuron is droped when: </p>
+						<p style = "text-align: center;"> E<sub>i</sub> &lt; θ </p>
+						<p> where θ is a threshold hyperparameter. This mimics synaptic pruning in biological networks, where weakly active synapses are eliminated to improve efficiency.</p>
+						<p> Dropout is applied at intervals of <b>[EVERY SOME NUMBER OF EPOCHS].</b> Parameters for this rule include: </p>
+						<ul>
+							<li>Energy Threshold θ: <b>[VALUE]</b></li>
+							<li>Aggregation Interval for computing energy: <b>[VALUE]</b></li>
+						</ul>
+		    </div>
+		    <div class="margin-right-block">
+						Margin note that clarifies some detail #main-content-block for intro section.
+		    </div>
+		</div>
+
+	<div class="content-margin-container" id="hebbian_based">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Hebbian-based</h1>
+            <p>Hebbian dropout follows an update rule inspired by synaptic strengthening:</p>
+						<p style = "text-align: center;"> Δw<sub>ij</sub> = η * a<sub>i</sub> * a<sub>j</sub> </p>
+						<p> where Δw<sub>ij</sub> is the change in weight between neurons <i>i</i> and <i>j</i>, a<sub>i</sub> and a<sub>j</sub> are their activations, and η is a learning rate.
+						<p> Weights with long-term low correlation (Hebbian activity) are pruned when:</p>
+						<p style = "text-align: center;"> w<sub>ij</sub> &lt; τ </p>
+						<p> Parameters for this rule include:</p>
+						<ul>
+							<li>Weight Threshold τ: <b>[VALUE]</b></li>
+							<li>Learning Rate η: <b>[VALUE]</b></li>
+							<li>Pruning Interval: <b>[VALUE]</b></li>
+						</ul>
+		    </div>
+		    <div class="margin-right-block">
+						Margin note that clarifies some detail #main-content-block for intro section.
+		    </div>
+		</div>
+
+	<div class="content-margin-container" id="magnitude_based">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Magnitude-based</h1>
+            <p> Magnitude-based pruning removes weights based on their absolute value. Weights with small magnitudes are assumed to contribute less to the network's output and are pruned when:</p>
+						<p style = "text-align: center;"> |w<sub>ij</sub>| &lt; δ  where w<sub>ij</sub> = 0 </p>
+						<p> where δ is a threshold hyperparameter. This method is widely used in deep learning due to its simplicity and effectiveness.</p>
+						<p>  We test pruning rates of <b>[%]</b> at <b>[SMT INTERVALS]</b>. <b>[IS THERE EQUATION ??]</b>
+		    </div>
+		    <div class="margin-right-block">
+						Margin note that clarifies some detail #main-content-block for intro section.
+		    </div>
+		</div>
+
+	<div class="content-margin-container" id="structure-based">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Structure-based</h1>
+            <p> Structured pruning removes entire <b>[Should we say channels or filters or neurons? ifl channels or filters since its images but oh well we can choose later hehehe]</b> at once using a structural importance score:</p>
+						<p style = "text-align: center;"> S<sub>k</sub> = <b>[EQUATION HERE]</b></p>
+						<p> where S<sub>k</sub> is the importance score for structure <i>k</i>. Structures with low importance are pruned when:</p>
+						<p style = "text-align: center;"> S<sub>k</sub> &lt; ϕ </p>
+						<p> where ϕ is a threshold hyperparameter. This mimics how biological networks may eliminate entire groups of synapses to optimize connectivity patterns.</p>
+
+		    </div>
+		    <div class="margin-right-block">
+						Margin note that clarifies some detail #main-content-block for intro section.
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="another">
 				<div class="margin-left-block">
 				</div>
 		    <div class="main-content-block">
@@ -299,13 +460,23 @@
 					A caption for the video could go here.
 		    </div>
 		</div>
+	<div class="content-margin-container" id="analysis">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Analysis and Results</h1>
+						compare all the methods and show the results.
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
 
 		<div class="content-margin-container" id="implications_and_limitations">
 				<div class="margin-left-block">
 				</div>
 		    <div class="main-content-block">
 						<h1>Implications and limitations</h1>
-						Let's end with some discussion of the implications and limitations.
+						Let's end with some discussion of the implications and limitations. so the conclusion section
 		    </div>
 		    <div class="margin-right-block">
 		    </div>
