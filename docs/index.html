@@ -224,14 +224,10 @@
               <a href="#intro">Introduction</a><br><br>
 			  <a href="#background">Background </a><br><br>
 			  <a href="#hypothesis">Hypothesis </a><br><br>
-              <a href="#dataset">ImageNette and CIFAR-10</a><br><br>
 			  <a href="#methods">Methods</a><br><br>
-			  <a href="#energy_based_dropout">Energy-based Dropout </a><br><br>
-			  <a href="#hebbian_based">Hebbian-based </a><br><br>
-			  <a href="#magnitude_based">Magnitude-based </a><br><br>
-			  <a href="#structure_based">Structure-based </a><br><br>
-			  <a href="#analysis">Analysis and Results </a><br><br>
-              <a href="#implications_and_limitations">Implications and limitations</a><br><br>
+			  <a href="#analysis">Results and Analysis</a><br><br>
+              <a href="#implications_and_limitations">Implications and Limitations</a><br><br>
+			  <a href="#implications_and_limitations">Future</a><br><br>
           </div>
 				</div>
 		    <div class="main-content-block">
@@ -333,67 +329,61 @@
 						</div>
 						</p>summed across all layers.</p>
 						<b>Neuron and Weight Importance</b>
-						</ul>
+						<ul>
 							<li>Unstructured pruning ranks individual weights by absolute value.</li>
-							</li>Structured pruning ranks neurons by the L1 norm of their weights.</li> 
-							</li>Importance scores are recalculated after every epoch during the pruning phase.</li>
+							<li>Structured pruning ranks neurons by the L1 norm of their weights.</li> 
+							<li>Importance scores are recalculated after every epoch during the pruning phase.</li>
 						</ul>
-						<b>Masking Mechanism</b>
+						</p><b>Masking Mechanism</b></p>
 						<p>We store a binary mask for weights or neurons.</p>
-						</p> Both weights and gradients are masked to prevent regrowth, ensuring that once a parameter is pruned, it stays pruned.</p>
+						<p> Both weights and gradients are masked to prevent regrowth, ensuring that once a parameter is pruned, it stays pruned.</p>
 						<b>Sparsity Tracking</b>
 						<ul>
-							</li>Magnitude pruning: sparsity = (# zero weights) / (total weights).<li>
-							</li>Structured pruning: sparsity = (current parameter count) / (original parameter count).</li>
+							<li>Magnitude pruning: sparsity = (# zero weights) / (total weights).</li>
+							<li>Structured pruning: sparsity = (current parameter count) / (original parameter count).</li>
 						</ul>
+						<p><b>Method-Specific Architecture</b></p>
+						<p><b>Baseline</b></p>
+						<p>The target network trained for 30 epochs without pruning.</p>
+						<p><b>Magnitude</b></p>
+						<p>Magnitude pruning identifies the threshold corresponding to the k-th smallest value, where k=(total weights)×(current prune ratio). All weights below this threshold are zeroed and masked. </p>
+						<p><b>Energy</b></p>
+						<p>For each neuron, we compute energy as the mean-squared value of the row of weights:</p>
+						<div style="padding-left: 40px;">
+    						</p>E_i=1/n∑j wij^2</p>
+						</div>
+						<p>Neurons are ranked by this energy score, and pruned again according to a kth value threshold.</p>
+						<p>When a neuron is removed:</p>
+						<ul>
+							<li>We remove its entire weight row.</li>
+							<li>We remove the corresponding column input to the next layer, etc.</li>
+						</ul>
+						<p>We prune only the first two layers to avoid altering the classification layer.</p>
+						<p><b>Activation-Based Structured Pruning</b></p>
+						<p>This method is the same as energy-based except it instead ranks neurons by how strongly they activate during training. For each neuron, we compute an activation score:</p>
+						<div style="padding-left: 40px;">
+    						</p>A_j = Σ_{i=1..d_in} ( (1/B) · Σ_{b=1..B} (x_i^(b))² ) · |W[j,i]|</p>
+						</div>
+						<p>which measures how strongly the neuron responds to the input using its current weight vector. </p>
 		    </div>		
-		    <div class="margin-right-block">
-						Margin note that clarifies some detail #main-content-block for intro section.
-		    </div>
 		</div>
 
-	<div class="content-margin-container" id="energy_based_dropout">
+	<div class="content-margin-container" id="Results and Analysis">
 				<div class="margin-left-block">
 				</div>
 		    <div class="main-content-block">
-						<h1>Energy-based Dropout</h1>
-			<p><b> i should make this in results section and the different methods can be a subsection within.</b></p>
-            <p> Energy-based dropout removes units based on activity level. For each neuron <i>i</i>, we compute an "energy" term: </p>
-						<p style = "text-align: center;"> E<sub>i</sub> = <b>[EQUATION HERE]</b></p>
-						<p> This corresponds to the average activation, firing rate, or some other measure of neuron activity over a given period. <b> I SHOULD PROB SPECIFY WHAT THIS MEASURES LATER</b></p>
-						<p> A neuron is droped when: </p>
-						<p style = "text-align: center;"> E<sub>i</sub> &lt; θ </p>
-						<p> where θ is a threshold hyperparameter. This mimics synaptic pruning in biological networks, where weakly active synapses are eliminated to improve efficiency.</p>
-						<p> Dropout is applied at intervals of <b>[EVERY SOME NUMBER OF EPOCHS].</b> Parameters for this rule include: </p>
-						<ul>
-							<li>Energy Threshold θ: <b>[VALUE]</b></li>
-							<li>Aggregation Interval for computing energy: <b>[VALUE]</b></li>
-						</ul>
+						<h1>Results & Analysis</h1>
+            <p></p>
 		    </div>
-		    <div class="margin-right-block">
-						Margin note that clarifies some detail #main-content-block for intro section.
-		    </div>
-		</div>
-
-	<div class="content-margin-container" id="hebbian_based">
-				<div class="margin-left-block">
+			</div>
 				</div>
-		    <div class="main-content-block">
-						<h1>Hebbian-based</h1>
-            <p>Hebbian dropout follows an update rule inspired by synaptic strengthening:</p>
-						<p style = "text-align: center;"> Δw<sub>ij</sub> = η * a<sub>i</sub> * a<sub>j</sub> </p>
-						<p> where Δw<sub>ij</sub> is the change in weight between neurons <i>i</i> and <i>j</i>, a<sub>i</sub> and a<sub>j</sub> are their activations, and η is a learning rate.
-						<p> Weights with long-term low correlation (Hebbian activity) are pruned when:</p>
-						<p style = "text-align: center;"> w<sub>ij</sub> &lt; τ </p>
-						<p> Parameters for this rule include:</p>
-						<ul>
-							<li>Weight Threshold τ: <b>[VALUE]</b></li>
-							<li>Learning Rate η: <b>[VALUE]</b></li>
-							<li>Pruning Interval: <b>[VALUE]</b></li>
-						</ul>
-		    </div>
+            <img src="./images/Screenshot 2025-12-08 at 5.52.35 PM.png" width=512px/>
 		    <div class="margin-right-block">
-						Margin note that clarifies some detail #main-content-block for intro section.
+						Caption for the image.
+		    </div>
+			<img src="./images/DL 6.7960.png" width=512px/>
+		    <div class="margin-right-block">
+						Caption for the image.
 		    </div>
 		</div>
 
@@ -401,82 +391,17 @@
 				<div class="margin-left-block">
 				</div>
 		    <div class="main-content-block">
-						<h1>Magnitude-based</h1>
-            <p> Magnitude-based pruning removes weights based on their absolute value. Weights with small magnitudes are assumed to contribute less to the network's output and are pruned when:</p>
-						<p style = "text-align: center;"> |w<sub>ij</sub>| &lt; δ  where w<sub>ij</sub> = 0 </p>
-						<p> where δ is a threshold hyperparameter. This method is widely used in deep learning due to its simplicity and effectiveness.</p>
-						<p>  We test pruning rates of <b>[%]</b> at <b>[SMT INTERVALS]</b>. <b>[IS THERE EQUATION ??]</b>
-		    </div>
-		    <div class="margin-right-block">
-						Margin note that clarifies some detail #main-content-block for intro section.
+						<h1>Implications and Limitations</h1>
+            <p></p>
 		    </div>
 		</div>
 
-	<div class="content-margin-container" id="structure-based">
+	<div class="content-margin-container" id="magnitude_based">
 				<div class="margin-left-block">
 				</div>
 		    <div class="main-content-block">
-						<h1>Structure-based</h1>
-            <p> Structured pruning removes entire <b>[Should we say channels or filters or neurons? ifl channels or filters since its images but oh well we can choose later hehehe]</b> at once using a structural importance score:</p>
-						<p style = "text-align: center;"> S<sub>k</sub> = <b>[EQUATION HERE]</b></p>
-						<p> where S<sub>k</sub> is the importance score for structure <i>k</i>. Structures with low importance are pruned when:</p>
-						<p style = "text-align: center;"> S<sub>k</sub> &lt; ϕ </p>
-						<p> where ϕ is a threshold hyperparameter. This mimics how biological networks may eliminate entire groups of synapses to optimize connectivity patterns.</p>
-
-		    </div>
-		    <div class="margin-right-block">
-						Margin note that clarifies some detail #main-content-block for intro section.
-		    </div>
-		</div>
-
-		<div class="content-margin-container" id="another">
-				<div class="margin-left-block">
-				</div>
-		    <div class="main-content-block">
-            <h1>Another section</h1>
-            In this section we embed a video:
-						<video class='my-video' loop autoplay muted style="width: 725px">
-								<source src="./images/mtsh.mp4" type="video/mp4">
-						</video>
-		    </div>
-		    <div class="margin-right-block">
-					A caption for the video could go here.
-		    </div>
-		</div>
-	<div class="content-margin-container" id="analysis">
-				<div class="margin-left-block">
-				</div>
-		    <div class="main-content-block">
-						<h1>Analysis and Results</h1>
-						compare all the methods and show the results.
-		    </div>
-		    <div class="margin-right-block">
-		    </div>
-		</div>
-
-		<div class="content-margin-container" id="implications_and_limitations">
-				<div class="margin-left-block">
-				</div>
-		    <div class="main-content-block">
-						<h1>Implications and limitations</h1>
-						Let's end with some discussion of the implications and limitations. so the conclusion section
-		    </div>
-		    <div class="margin-right-block">
-		    </div>
-		</div>
-
-		<div class="content-margin-container" id="citations">
-				<div class="margin-left-block">
-				</div>
-		    <div class="main-content-block">
-						<div class='citation' id="references" style="height:auto"><br>
-							<span style="font-size:16px">References:</span><br><br>
-							<a id="ref_1"></a>[1] <a href="https://en.wikipedia.org/wiki/Allegory_of_the_cave">Allegory of the Cave</a>, Plato, c. 375 BC<br><br>
-							<a id="ref_2"></a>[2] <a href="">A Human-Level AGI</a>, OpenAI, 2025<br><br>
-						</div>
-		    </div>
-		    <div class="margin-right-block">
-            <!-- margin notes for reference block here -->
+						<h1>Future</h1>
+            <p></p>
 		    </div>
 		</div>
 
