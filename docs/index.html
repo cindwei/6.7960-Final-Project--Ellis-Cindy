@@ -302,14 +302,16 @@
 						<ul>
 							<li>an input layer of input size (3072) → 2</b> </li>
 							<li>a hidden layer mapping 2 → 2</b> </li>
-							<li>Ba classification layer mapping 2 → 10.</li>
+							<li>a classification layer mapping 2 → 10.</li>
 						</ul>
 						<p>This architecture contains 6168 parameters.<p>
 						</p>The starting network (before pruning) was calculated in order for pruning to produce the target network size after the fixed training schedule. </p>
 						<p></b>The initial network consists of:</b></p>
+						<ul>
 							<li>an input layer of input size (3072) → 20</li>
-							</li>a hidden layer mapping 20 → 20</li>
-							</li>a classification layer mapping 20 → 10.</li>
+							<li>a hidden layer mapping 20 → 20</li>
+							<li>a classification layer mapping 20 → 10.</li>
+						</ul>
 						<p><b>Training Configuration</b></p>
 						<p>All models are trained for 30 epochs, with the first 5 epochs serving as a warm-up period with no pruning. From epochs 7 through 30, pruning occurs once after every epoch. Trainings use:</p>
 						<ul>
@@ -327,18 +329,17 @@
 						</div>
 						</p>summed across all layers.</p>
 						<b>Neuron and Weight Importance</b>
-						</ul>
+						<ul>
 							<li>Unstructured pruning ranks individual weights by absolute value.</li>
-							</li>Structured pruning ranks neurons by the L1 norm of their weights.</li>
-							</li>Importance scores are recalculated after every epoch during the pruning phase.</li>
+							<li>Structured pruning ranks neurons by the L1 norm of their weights.</li>
+							<li>Importance scores are recalculated after every epoch during the pruning phase.</li>
 						</ul>
 						<b>Masking Mechanism</b>
-						<p>We store a binary mask for weights or neurons.</p>
-						</p> Both weights and gradients are masked to prevent regrowth, ensuring that once a parameter is pruned, it stays pruned.</p>
+						<p>We store a binary mask for weights or neurons. Both weights and gradients are masked to prevent regrowth, ensuring that once a parameter is pruned, it stays pruned.</p>
 						<b>Sparsity Tracking</b>
 						<ul>
-							</li>Magnitude pruning: sparsity = (# zero weights) / (total weights).<li>
-							</li>Structured pruning: sparsity = (current parameter count) / (original parameter count).</li>
+							<li>Magnitude pruning: sparsity = (# zero weights) / (total weights).</li>
+							<li>Structured pruning: sparsity = (current parameter count) / (original parameter count).</li>
 						</ul>
 		    </div>
 		    <div class="margin-right-block">
