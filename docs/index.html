@@ -42,7 +42,7 @@
 			padding: 5px;
 	}
 	.margin-right-block {
-			display:none; 
+			display:none;
 	}
 
 	img {
@@ -238,10 +238,10 @@
 					<li>Second, synaptic pruning continues throughout adolescence and adulthood. Instead of removing entire neurons, only a subset of the junctions between them are removed. This fine-tunes the connectivity of surviving neurons by eliminating weak or redundant synapses. </li>
 				</ul>
 
-		
+
 				</p>In deep learning, these parallel naturally onto <b>structured pruning</b> (removing entire neurons or channels) and <b>unstructured pruning</b> (permanently zeroing individual weights). Structured pruning reduces inference cost because it simplifies the actual dimensions of the model, whereas unstructured pruning typically requires specialized hardware to speed up computation as it does not intrinsically reduce the number of operations.
 				</p>Although biological systems use both pruning strategies together and adjust connections dynamically during learning, most deep learning approaches do not. Many pruning methods operate either before training or after training, and dynamic pruning during training is far less explored. Even methods that do prune during training rarely incorporate biologically grounded rules such as activity-based or energy-based selection. As a result, we still do not know whether using biologically inspired pruning signals during training can produce models that are more efficient or more accurate than those produced by standard pruning techniques.</p>
-				</p>To address this, we implemented three biologically motivated mechanisms: 
+				</p>To address this, we implemented three biologically motivated mechanisms:
 				<ul>
 					<li>unstructured magnitude pruning, which removes individual weights based on their absolute value</li>
 					<li>structured energy-based pruning, which removes entire neurons based on the average squared weight magnitude </li>
@@ -261,7 +261,7 @@
 		    <div class="main-content-block">
 					<h1>Background</h1>
 				  	</p>Pruning is a long studied strategy for reducing the size and computational cost of neural networks. A growing body of work shows that many modern neural net parameters are unnecessary for achieving strong performance. This has led to vast literature on identifying smaller subnetworks that retain the accuracy of the full model, often without requiring substantial changes to training pipelines. </p>
-				</p>One of the foundational ideas in this area is the Lottery Ticket Hypothesis. Frankle and Carbin (2018) showed that dense, randomly initialized neural networks contain subnetworks (“winning tickets”) that can be trained to reach the same accuracy as the original large model. These winning subnetworks are found through iterative magnitude pruning followed by retraining using only the surviving weights, and these subnetworks can match the accuracy of the full model while training in as few or fewer epochs than the original network.</p> 
+				</p>One of the foundational ideas in this area is the Lottery Ticket Hypothesis. Frankle and Carbin (2018) showed that dense, randomly initialized neural networks contain subnetworks (“winning tickets”) that can be trained to reach the same accuracy as the original large model. These winning subnetworks are found through iterative magnitude pruning followed by retraining using only the surviving weights, and these subnetworks can match the accuracy of the full model while training in as few or fewer epochs than the original network.</p>
 				</p>Follow up work has extended this idea by demonstrating that, in many overparameterized models, subnetworks with competitive performance can be identified even without training. Recent studies show that optimization procedures can be used to select an efficient subnetwork directly from the initial weights of the model. This suggests that overparameterization creates a large space of viable subnetworks, many of which are structurally efficient.</p>
 				</p>Research in pruning has since expanded toward a wide range of techniques. Pruning methods can be grouped into several major patterns such as loss-based sparsification which encourages sparse weights through modified objectives, sparse-to-sparse approaches that prune and regrow weights during training, filter-level scoring methods for structured pruning, and differentiable mask-learning techniques. These pruning methods are less explored than post-training approaches due to their more complex pruning-regrowth dynamics. Most of the literature has also focused on convolutional networks with considerably fewer studies examining pruning in MLPs or transformers. </p>
 				</p>Within unstructured pruning, magnitude pruning remains one of the strongest and simplest baselines. However, more advanced methods exist. For example, Wanda integrates both weights and activation statistics to determine which weights to remove and often outperforms standard magnitude pruning. SparseGPT uses a local reconstruction loss to prune weights while preserving the function of the model, achieving high sparsity with minimal accuracy loss in large language models. At the structured level, methods such as coupled structural pruning identify groups of neurons or channels that must be removed together due to architectural dependencies, achieving substantial pruning rates with modest accuracy drops. </p>
@@ -279,7 +279,7 @@
 				</div>
 		    <div class="main-content-block">
 					<h1>Hypothesis</h1>
-					<p>Our hypothesis is that during training structural pruning will allow the model to keep the neuron structures that matter most, which should reduce computational cost and help preserve accuracy even at small model sizes. We also expect that combining this structured pruning with unstructured magnitude pruning will be even more effective, since each method removes a different type of redundancy in the network. 
+					<p>Our hypothesis is that during training structural pruning will allow the model to keep the neuron structures that matter most, which should reduce computational cost and help preserve accuracy even at small model sizes. We also expect that combining this structured pruning with unstructured magnitude pruning will be even more effective, since each method removes a different type of redundancy in the network.
 					</p>We predict that a model that prunes itself while it trains can achieve better accuracy-to-size trade-offs than a small model trained from scratch.</p>
 					</p>
 				<br><br>
@@ -331,7 +331,7 @@
 						<b>Neuron and Weight Importance</b>
 						<ul>
 							<li>Unstructured pruning ranks individual weights by absolute value.</li>
-							<li>Structured pruning ranks neurons by the L1 norm of their weights.</li> 
+							<li>Structured pruning ranks neurons by the L1 norm of their weights.</li>
 							<li>Importance scores are recalculated after every epoch during the pruning phase.</li>
 						</ul>
 						</p><b>Masking Mechanism</b></p>
@@ -419,12 +419,25 @@
 				</div>
 		    <div class="main-content-block">
 						<h1>Limitations</h1>
-						<p>This study also has several limitations that place constraints on the conclusions we can make. Our experiments rely on small models and datasets such as CIFAR-10, which have limited resolution and a small number of categories. These datasets do not fully capture the complexity of large-scale vision tasks, so pruning behavior may differ on more challenging benchmarks. </p>
-						<p>All experiments were run in Google Colab on a single T4 GPU, which limited the range of capability we could test and hyperparameters we could explore.</p>
-						<p>We have severely bottlenecked our baseline in order to compare the effects of pruning to constraints. Our representational capability at two dimensions is very weak, and thus shows a poor performance baseline (~20%). Similarly, our training and validation accuracies are very close together, suggesting we are underfitting.</p>
-						<p>Our difference in performance between energy and activation-based pruning is small, and would require more runs to verify.</p>
-						<p>Due to the presence of effects such as the lottery ticket hypothesis, we should retrain the model more than three times each in order to get true observations, especially as with the tiny number of parameters individual initial initializations may have a large impact on the outcome.</p>
-						<p>We have used a model implemented from ground-up, limiting the significance of our research on state-of-the-art models.</p>
+						<p>This study also has several limitations that place constraints on the conclusions we can make.
+							<ul>
+								<li><b>Datasets</b>: Our experiments rely on small models and datasets such as CIFAR-10, which have limited resolution and a small number of categories. These datasets do not fully capture the complexity of large-scale vision tasks, so pruning behavior may differ on more challenging benchmarks. </li>
+								<br>
+								<li><b>Compute Constraints</b>: All experiments were run in Google Colab on a single T4 GPU, which limited the range of capability we could test and hyperparameters we could explore.</li>
+								<br>
+								<li><b>Constrained Baseline:</b> We have severely bottlenecked our baseline in order to compare the effects of pruning to constraints. Our representational capability at two dimensions is very weak, and thus shows a poor performance baseline (~20%). Similarly, our training and validation accuracies are very close together, suggesting we are underfitting. Our difference in performance between energy and activation-based pruning is small, and would require more runs to verify.</li>
+							<br>
+							<li><b>Limited Training Trials:</b> Due to the presence of effects such as the lottery ticket hypothesis, we should retrain the model more than three times each in order to get true observations, especially as with the tiny number of parameters individual initial initializations may have a large impact on the outcome.</li>
+							<br>
+							<li><b>Time Constraints:</b> Time limited our ability to test additional biological mechanisms, to vary architectural choices, or to perform deeper analyses of representation stability.</li>
+								<br>
+								<li><b>Model Implementation:</b> We have used a model implemented from ground-up, limiting the significance of our research on state-of-the-art models.</li>
+							</ul>
+
+
+						<p></p>
+
+
 						<p>Overall, these limitations mean that our findings should be interpreted as a start, and future work with larger models, more varied datasets, and greater computational resources would help determine how these biologically inspired methods can be applied.</p>
             <p></p>
 		    </div>
@@ -443,5 +456,92 @@
 		</div>
 
 	</body>
+	<div class="content-margin-container" id="references">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>References</h1>
+            <p>
+				<ol>
+					<li><b>STUN: Structured-Then-Unstructured Pruning for Scalable MoE Pruning</b>
+						<br>Lee, J., Hwang, S., Qiao, A., Campos, D., Yao, Z., & He, Y., 2025.</li>
+					<br>
+						<li><b>The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks</b>
+						<br>Frankle, J., & Carbin, M., 2019. arXiv preprint arXiv:1803.03635.</li>
+					<br>
+						<li><b>Proving the Lottery Ticket Hypothesis: Pruning is All You Need</b>
+						<br>Malach, E., Yehudai, G., Shalev-Shwartz, S., & Shamir, O., 2020. arXiv preprint arXiv:2002.00585.</li>
+					<br>
+						<li><b>What’s Hidden in a Randomly Weighted Neural Network?</b>
+						<br>Ramanujan, V., Wortsman, M., Kembhavi, A., Farhadi, A., & Rastegari, M., 2020. arXiv preprint arXiv:1911.13299.
+					</li>
+					<br>
+					<li><b>A Survey on Deep Neural Network Pruning: Taxonomy, Comparison, Analysis, and Recommendations</b>
+						<br>Cheng, H., Zhang, M., & Shi, J. Q., 2023. arXiv preprint arXiv:2308.06767.
+					</li>
+					<br>
+					<li><b>LLM-Pruner: On the Structural Pruning of Large Language Models</b>
+						<br>Ma, X., Fang, G., & Wang, X., 2023. arXiv preprint arXiv:2305.11627.
+					</li>
+					<br>
+					<li><b>Rigging the Lottery: Making All Tickets Winners</b>
+						<br>Evci, U., Gale, T., Menick, J., Castro, P. S., & Elsen, E., 2019. arXiv preprint arXiv:1911.11134.
+					</li>
+					<br>
+					<li>
+						<b>What is the State of Neural Network Pruning?</b>
+						<br>Blalock, D., Gonzalez Ortiz, J. J., Frankle, J., & Guttag, J., 2020. arXiv preprint arXiv:2003.03033.
+
+					</li>
+					<br>
+					<li><b>EDropout: Energy-Based Dropout and Pruning of Deep Neural Networks</b>
+						<br>Salehinejad, H., & Valaee, S., 2022. arXiv preprint arXiv:2006.04270.
+					</li>
+					<br>
+					<li><b>Confident Magnitude-Based Neural Network Pruning</b>
+						<br>Alvarez, J., 2024. arXiv preprint arXiv:2408.04759.
+					</li>
+					<br>
+					<li><b>Structured Pruning for Deep Convolutional Neural Networks: A Survey</b>
+						<br>He, Y., & Xiao, L., 2023. arXiv preprint arXiv:2303.00566.
+					</li>
+					<br>
+					<li><b>Neuronal Cell Death</b>
+						<br>Fricker, M., Tolkovsky, A. M., Borutaite, V., Coleman, M., & Brown, G. C., 2018. Physiological Reviews.
+
+					</li>
+					<br>
+					<li>
+						<b>Neurotrophins: Roles in Neuronal Development and Function</b>
+						<br>Huang, E. J., & Reichardt, L. F., 2003. Nature Reviews Neuroscience.
+
+					</li>
+					<br>
+					<li>
+						<b>Elimination of Synapses in the Developing Nervous System</b>
+						<br>Purves, D., & Lichtman, J. W., 1980. Science.
+
+					</li>
+					<br>
+					<li>
+						<b>Redundancy Reduction and Independent Component Analysis: Conditions on Cumulants and Adaptive Approaches</b>
+						<br>Nadal, J.-P., & Parga, N., 1997. Neural Computation.
+
+					</li>
+					<br>
+					<li>
+						<b>A solution to the learning dilemma for recurrent networks of spiking neurons</b>
+						<br>Bellec, G., Scherr, F., Subramoney, A., Hajek, E., Salaj, D., Legenstein, R., & Maass, W., 2020. Nature Communications
+
+					</li>
+				</ol>
+
+
+			</p>
+		    </div>
+		</div>
+
+	</body>
+
 
 </html>
