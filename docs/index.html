@@ -380,6 +380,26 @@
     						Ma, X., Fang, G., & Wang, X. (2023). arXiv:2305.11627.
   					</span>
 				</span>. </p>
+				The majority of structured pruning operates on CNNs, where entire filters can be removed, while very little has been implemented on MLPs.
+				<span class="citation">[11]
+  					<span class="citation-popup">
+    					<b>Data-Driven Sparse Structure Selection for Deep Neural Networks</b><br>
+    						Huang, Z., Wang, N. (2018). *Springer*.
+  					</span>
+				</span>. </p>
+				<span class="citation">[12]
+  					<span class="citation-popup">
+    					<b>Learning Efficient Convolutional Networks through Network Slimming</b><br>
+    						Liu, Z., Li, J., Shen, Z., Huang, Gao., Yan, Shoumeng., Zhang, Changshui. (2017). arXiv:1708.06519.
+  					</span>
+				</span>. </p>
+				<span class="citation">[13]
+  					<span class="citation-popup">
+    					<b>Pruning Filters for Efficient ConvNets</b><br>
+    						Li, Hao., Kadav, A., Durdanovic, I., Samet, H., Graf, H. (2016). arXiv:1608.08710.
+  					</span>
+				</span>. </p>
+
 				</p>Dynamic pruning during training has also been explored but less extensively. Methods such as SET or RigL either add back in weights or limit the number of gradient updates, but does not attempt to alter the dimensionality of the model throughout training. 
 				<span class="citation">[5]
   					<span class="citation-popup">
@@ -392,6 +412,13 @@
  					 <span class="citation-popup">
     					<b>What is the State of Neural Network Pruning?</b><br>
     						Blalock, D., Ortiz, J., Frankle, J., Guttag, J.(2020). arXiv:2003.03033.
+  					</span>
+				</span>.
+				One of the few structured pruning methods that operates on MLPs that we could find (Neuron-level Structured Pruning using Polarization Regularizer) still trains to learn scaling factors on all neurons first, then prunes in one-shot and then fine-tunes
+				<span class="citation">[14]
+ 					 <span class="citation-popup">
+    					<b>Neuron-level Structured Pruning using Polarization Regularizer</b><br>
+    						Zhuang, T., Zhuang, Z., Huang, Y., Zeng, X., Shuang, K., Li, X. (2020). *NIPS*.
   					</span>
 				</span>.
 				</p>There remains substantial interest in pruning strategies that are simple and effective during training. In biological neural systems, connections are strengthened, weakened, or removed through mechanisms such as synaptic decay, activity-dependent suppression, and Hebbian plasticity
@@ -646,6 +673,8 @@
 							<li><b>Time Constraints:</b> Time limited our ability to test additional biological mechanisms, to vary architectural choices, or to perform deeper analyses of representation stability.</li>
 								<br>
 								<li><b>Model Implementation:</b> We have used a model implemented from ground-up, limiting the significance of our research on state-of-the-art models.</li>
+								<br>
+								<li><b>Baseline Comparision:</b> Lacking established structured during-training MLP pruning methods makes it more difficult to properly compare and benchmark our method to existing methods. </li>
 							</ul>
 
 
@@ -666,9 +695,7 @@
 		    <div class="main-content-block">
 						<h1>Future Work</h1>
 						<p>Future work could include testing the optimal ratio of structured to unstructured pruning over the total epochs. It would also be helpful to have a deeper comparision of during-training pruning versus one-shot pruning. We could experiement with additional biologically inspired scoring rules such as the Hebbian theory, which looks at how pairs of neurons activate together. Finally, it would good to try these methods on larger, state-of-the-art models to see how well the ideas scale.  </p>
-						<p>Exploring specialized sparse matrix multiplication techniques could make use of the zeroed magnitude pruning weights as well to further reduce FLOPs. A comparision of structured+unstructured pruning with pure unstructured pruning with sparse matrix acceleration would be helpful.</p>
-
-
+						<p>Exploring specialized sparse matrix multiplication techniques could make use of the zeroed magnitude pruning weights as well to further reduce FLOPs or make a comparision of FLOP reduction between structured and unstructured pruning. A comparision of structured+unstructured pruning with pure unstructured pruning with sparse matrix acceleration would be helpful.</p>
 
 		    </div>
 
@@ -764,9 +791,23 @@
 						<br>He, Y., & Xiao, L., 2023. arXiv preprint arXiv:2303.00566.
 					</li>
 					<br>
+					<li><b>Data-Driven Sparse Structure Selection for Deep Neural Networks</b>
+						<br>Huang, Z., Wang, N. (2018). *Springer*.
+					</li>
+					<br>
+					<li><b>Learning Efficient Convolutional Networks through Network Slimming</b>
+						<br>Liu, Z., Li, J., Shen, Z., Huang, Gao., Yan, Shoumeng., Zhang, Changshui. (2017). arXiv:1708.06519.
+					</li>
+					<br>
+					<li><b>Pruning Filters for Efficient ConvNets</b>
+						<br>Li, Hao., Kadav, A., Durdanovic, I., Samet, H., Graf, H. (2016). arXiv:1608.08710.
+					</li>
+					<br>
+					<li><b>Neuron-level Structured Pruning using Polarization Regularizer</b>
+						<br>Zhuang, T., Zhuang, Z., Huang, Y., Zeng, X., Shuang, K., Li, X. (2020). *NIPS*.
+					</li>
+					<br>
 				</ol>
-
-
 			</p>
 		    </div>
 
