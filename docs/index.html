@@ -23,7 +23,7 @@
 		align-items: center;  /* Vertically centers the children in the container */
 	}
 	.main-content-block {
-		width: 70%; /* Change this percentage as needed */
+		width: 85%; /* Change this percentage as needed */
     max-width: 1100px; /* Optional: Maximum width */
 		background-color: #fff;
 		border-left: 1px solid #DDD;
@@ -42,13 +42,7 @@
 			padding: 5px;
 	}
 	.margin-right-block {
-			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", "Avenir", sans-serif;
-			font-size: 14px;
-			width: 25%; /* Change this percentage as needed */
-			max-width: 256px; /* Optional: Maximum width */
-			position: relative;
-			text-align: left;
-			padding: 10px;  /* Optional: Adds padding inside the caption */
+			display:none; 
 	}
 
 	img {
@@ -237,16 +231,25 @@
 				</div>
 		    <div class="main-content-block">
 						<h1>Introduction</h1>
-            <p>Modern deep learning models are heavily overparameterized, often containing more weights and neurons than are needed to solve a task. This leads to unnecessary computation, memory usage, and energy costs. In contrast, biological neural systems such as the human brain achieve remarkable efficiency. During development and learning, the brain prunes both entire neurons and individual synapses, strengthens relevant connections, and maintains sparse architectures that still support flexible and powerful computation. Importantly, this pruning happens throughout learning, not only before or after it.</p>
-				<p>Biologically-inspired pruning for neural nets is a common idea. The biological process has two key components.</p>
+            <p>Modern deep learning models are heavily overparameterized, often containing more weights and neurons than are needed to solve a task. This leads to unnecessary computation, memory usage, and energy costs. In contrast, biological neural systems such as the human brain achieve remarkable efficiency. During development and learning, the brain prunes both entire neurons and individual synapses, strengthens relevant connections, and maintains sparse architectures that still support flexible and powerful computation. Importantly, this pruning happens throughout learning, not only before or after it. Biologically-inspired pruning for neural nets is a common idea.</p>
+				<p> The biological process has two key components.</p>
+				<ul>
+					<li>First, entire-neuron pruning occurs early in life, removing whole units. According to neurotrophic theory, the brain first overproduces neurons early in life. Then, developing neurons compete for a limited supply of neurotrophic factor (NTF) hormone.</li>
+					<li>Second, synaptic pruning continues throughout adolescence and adulthood. Instead of removing entire neurons, only a subset of the junctions between them are removed. This fine-tunes the connectivity of surviving neurons by eliminating weak or redundant synapses. </li>
+				</ul>
 
-				<p>First, entire-neuron pruning occurs early in life, removing whole units. According to neurotrophic theory, the brain first overproduces neurons early in life. Then, developing neurons compete for a limited supply of neurotrophic factor (NTF) hormone.</p>
-				<p>Second, synaptic pruning continues throughout adolescence and adulthood. Instead of removing entire neurons, only a subset of the junctions between them are removed. This fine-tunes the connectivity of surviving neurons by eliminating weak or redundant synapses. </p>
-				</p>In deep learning, these parallel naturally onto structured pruning (removing entire neurons or channels) and unstructured pruning (permanently zeroing individual weights). Structured pruning reduces inference cost because it simplifies the actual dimensions of the model, whereas unstructured pruning typically requires specialized hardware to speed up computation as it does not intrinsically reduce the number of operations.
+		
+				</p>In deep learning, these parallel naturally onto <b>structured pruning</b> (removing entire neurons or channels) and <b>unstructured pruning</b> (permanently zeroing individual weights). Structured pruning reduces inference cost because it simplifies the actual dimensions of the model, whereas unstructured pruning typically requires specialized hardware to speed up computation as it does not intrinsically reduce the number of operations.
 				</p>Although biological systems use both pruning strategies together and adjust connections dynamically during learning, most deep learning approaches do not. Many pruning methods operate either before training or after training, and dynamic pruning during training is far less explored. Even methods that do prune during training rarely incorporate biologically grounded rules such as activity-based or energy-based selection. As a result, we still do not know whether using biologically inspired pruning signals during training can produce models that are more efficient or more accurate than those produced by standard pruning techniques.</p>
-				</p>To address this question, we implement three biologically motivated mechanisms: unstructured magnitude pruning, energy-based and activation-based structured pruning. We compare two ways of scoring neurons for structured pruning, inspired by how the brain considers both ATP usage and activation frequency.</p>
-				</p>These choices reflect the two major forms of pruning observed in the brain and allow us to test whether combining structured and unstructured mechanisms during training yields better results than either method alone. We evaluate all methods consistently on CIFAR-10 to assess sparsity–accuracy trade-offs, training dynamics, and representational changes.</p>
-				</p>Ultimately, our goal is to explore whether the principles that guide the efficiency of biological brains can also guide the design of more compact and computationally efficient deep learning architectures.</p>
+				</p>To address this, we implemented three biologically motivated mechanisms: 
+				<ul>
+					<li>unstructured magnitude pruning, which removes individual weights based on their absolute value</li>
+					<li>structured energy-based pruning, which removes entire neurons based on the average squared weight magnitude </li>
+					<li>structured activation-based pruning, which removes entire neurons based on their average activation strength during training </li>
+				</ul>
+				<p> We compared two ways (energy and activation) of scoring neurons for structured pruning, inspired by how the brain considers both ATP usage and activation frequency.</p>
+				<p>These choices reflect the two major forms of pruning observed in the brain and allow us to test whether combining structured and unstructured mechanisms during training yields better results than either method alone. We evaluate all methods consistently on CIFAR-10 to assess sparsity–accuracy trade-offs, training dynamics, and representational changes.</p>
+				<p>Ultimately, our goal is to explore whether the principles that guide the efficiency of biological brains can also guide the design of more compact and computationally efficient deep learning architectures.</p>
 		    </div>
 		    <div class="margin-right-block">
 						Margin note that clarifies some detail #main-content-block for intro section.
@@ -297,7 +300,7 @@
 						<ul>
 							<li>an input layer of input size (3072) → 2</b> </li>
 							<li>a hidden layer mapping 2 → 2</b> </li>
-							<li>Ba classification layer mapping 2 → 10.</li>
+							<li>a classification layer mapping 2 → 10.</li>
 						</ul>
 						<p>This architecture contains 6168 parameters.<p>
 						</p>The starting network (before pruning) was calculated in order for pruning to produce the target network size after the fixed training schedule. </p>
@@ -368,24 +371,24 @@
 			<h1>Results & Analysis</h1>
 			<p></p>
 			<div class="image-row">
-				<img src="./images/table.png" width="512">
-				<div class="caption">Caption for the image.</div>
+				<img src="./images/table.png" width="800">
+				<div class="caption"><i>Accuracy, FLOPs, and # parameters of post-training network of different pruning methods averaged over 3 runs.</i></div>
 			</div>
 			<!-- Image 1 + caption -->
 			<div class="image-row">
-				<img src="./images/accuracies.png" width="512">
-				<div class="caption">Caption for the image.</div>
+				<img src="./images/accuracies.png" width="800">
+				<div class="caption"><i>Training/validation accuracies and sparsity of one training of different pruning methods over 30 epochs.</i></div>
 			</div>
 
 			<!-- Image 2 + caption -->
 			<div class="image-row">
-				<img src="./images/flops.png" width="512">
-				<div class="caption">Caption for the image.</div>
+				<img src="./images/flops.png" width="600">
+				<div class="caption"><i>FLOPs at each epoch of one training of different pruning methods.</i></div>
 			</div>
 			<!-- Image 3 + caption -->
 			<div class="image-row">
-				<img src="./images/neuronsurvival.png" width="512">
-				<div class="caption">Caption for the image.</div>
+				<img src="./images/neuronsurvival.png" width="800">
+				<div class="caption"><i>Neuron magnitude at each epoch of one training of different pruning methods.</i></div>
 			</div>
 		</div>
 
