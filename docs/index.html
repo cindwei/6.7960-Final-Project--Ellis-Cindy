@@ -380,13 +380,20 @@
     						Ma, X., Fang, G., & Wang, X. (2023). arXiv:2305.11627.
   					</span>
 				</span>. </p>
-				</p>Dynamic pruning during training has also been explored but less extensively. Methods such as RigL and SET prune and regrow connections based on weight magnitude or gradient information. While these approaches introduce sparsity throughout training, they do not perform true structural pruning and still rely heavily on magnitude signals rather than higher-level
+				</p>Dynamic pruning during training has also been explored but less extensively. Methods such as SET or RigL either add back in weights or limit the number of gradient updates, but does not attempt to alter the dimensionality of the model throughout training. 
 				<span class="citation">[5]
   					<span class="citation-popup">
     					<b>Rigging the Lottery: Making All Tickets Winners</b><br>
     						Evci, U., Gale, T., Menick, J., Castro, P. S., & Elsen, E. (2019). arXiv:1911.11134.
   					</span>
 				</span>. </p>
+				Standardized evaluators such as ShrinkBench ask for masks for the model's weight tensors, but does not intrinsically allow for a way to alter the dimensionality for true structured pruning.
+				<span class="citation">[6]
+ 					 <span class="citation-popup">
+    					<b>What is the State of Neural Network Pruning?</b><br>
+    						Blalock, D., Ortiz, J., Frankle, J., Guttag, J.(2020). arXiv:2003.03033.
+  					</span>
+				</span>.
 				</p>There remains substantial interest in pruning strategies that are simple and effective during training. In biological neural systems, connections are strengthened, weakened, or removed through mechanisms such as synaptic decay, activity-dependent suppression, and Hebbian plasticity
 				<span class="citation">[9]
  					 <span class="citation-popup">
@@ -394,7 +401,7 @@
     						Purves, D., & Lichtman, J. W. (1980). *Science*.
   					</span>
 				</span>.
-				These principles motivate our exploration of energy-based pruning, activity-based pruning, and magnitude pruning. By examining how these mechanisms behave under the same training pipeline, we aim to highlight similarities and differences between biological rules and modern pruning strategies. </p>
+				These principles motivate our exploration of energy-based pruning, activity-based pruning, and magnitude pruning. </p>
 				<br><br>
 		    </div>
 		    <div class="margin-right-block" style="transform: translate(0%, -100%);"> <!-- you can move the margin notes up and down with translate -->
@@ -586,7 +593,7 @@
 			<p>Our ending parameters with pruning methods are not exact to our target of 6168 parameters due to floating-point inconsistencies, but our ending networks always have a limit of at most 6168. This ensures our pruned networks never have more capacity than the baseline.</p>
 			<p>Increasing our model capacity to start at our stated initial network at 123,480 parameters and applying magnitude pruning to have an ending network of 5559 nonzero parameters, we experience a huge increase in validation accuracy (142.9% increase). This is expected as despite the prevalence of zero weights, the dimensionality of our representation is much higher. However, this pruning makes no attempt at reducing the number of FLOPs needed to train, sitting at ~3.7 million FLOPs.</p>
 			<p>Moving on to our energy-based pruning, we experience a higher average than the baseline (20.35% increase). We expect this is because our model is implicitly applying the lottery ticket hypothesis. By pruning a large network as we go to a smaller one, we are implicitly searching for good initializations while removing the need to try many initializations or retrain. The accuracy is only about half as good as the non-structured pruning, however, we reduce the number of total required FLOPs by 42.6%.</p>
-			<p>Our activation-based pruning performs slightly worse than the energy-based, but still a 12% increase over the baseline. This suggests that using the magnitude of the weights is a better scorer of neurons for pruning than the amount change of the input into that neuron.</p>
+			<p>Our activation-based pruning performs slightly worse than the energy-based, but still a 12% increase over the baseline. This suggests that using the magnitude of the weights is a better scorer of neurons for pruning than the amount change of the input into that neuron. However, our p value of energy being better than activation is high at 0.097 (not significant) and with only 3 trials, so further testing is needed to be conclusive.</p>
 			<p>Combining structured and unstructured pruning methods (energy+magnitude), we preserve a lot more dimensionality than fully structured pruning, while maintaining a similar decrease in FLOPs from unstructured pruning. We experience a 94.6% increase over baseline (preserving 66% of our unstructured pruning accuracy), while reducing FLOPs by 37.43% (preserving 87.9% of the fully structured decrease). This shows that we can preserve the majority of the computation saved from fully structured pruning, and can also preserve a majority of the increase in accuracy from pruning down to the target with fully unstructured pruning.</p>
 			<p>When combining activation+magnitude, we experience slightly better accuracy with the same changes in efficiency. This suggests that either the difference between energy or activation observed earlier is not significant, or activation-based pruning is more effective in early epochs.</p>
 			<p></p>
@@ -659,6 +666,7 @@
 		    <div class="main-content-block">
 						<h1>Future Work</h1>
 						<p>Future work could include testing the optimal ratio of structured to unstructured pruning over the total epochs. It would also be helpful to have a deeper comparision of during-training pruning versus one-shot pruning. We could experiement with additional biologically inspired scoring rules such as the Hebbian theory, which looks at how pairs of neurons activate together. Finally, it would good to try these methods on larger, state-of-the-art models to see how well the ideas scale.  </p>
+						<p>Exploring specialized sparse matrix multiplication techniques could make use of the zeroed magnitude pruning weights as well to further reduce FLOPs. A comparision of structured+unstructured pruning with pure unstructured pruning with sparse matrix acceleration would be helpful.</p>
 
 
 
