@@ -305,9 +305,12 @@
 						<p>This architecture contains 6168 parameters.<p>
 						</p>The starting network (before pruning) was calculated in order for pruning to produce the target network size after the fixed training schedule. </p>
 						<p></b>The initial network consists of:</b></p>
+						<ul>
 							<li>an input layer of input size (3072) → 20</li>
-							</li>a hidden layer mapping 20 → 20</li>
-							</li>a classification layer mapping 20 → 10.</li>
+							<li>a hidden layer mapping 20 → 20</li>
+							<li>a classification layer mapping 20 → 10.</li>
+						</ul>
+						<p>This architecture contains 123,480 parameters.</p>
 						<p><b>Training Configuration</b></p>
 						<p>All models are trained for 30 epochs, with the first 5 epochs serving as a warm-up period with no pruning. From epochs 7 through 30, pruning occurs once after every epoch. Trainings use:</p>
 						<ul>
@@ -315,9 +318,10 @@
 							<li>Batch Size: <b>512</b></li>
 							<li> Loss Function: <b>Cross Entropy Loss (HW1)</b></li>
 							<li> Learning Rate: <b>.15</b></li>
+							<li> Final Pruning Ratio: <b>.9</b></li>
 						</ul>
 						</p>
-						<p>We use a pruning scheduler that computes the pruning ratio for each epoch. This is calculated as # of current epoch - # of warmup epochs / (total epochs - # of warmup epochs -1). After the warm-up period, the prune ratio increases linearly from 0 to the final target sparsity of 90%, ensuring smooth parameter removal over time.<p>
+						<p>We use a pruning scheduler that computes the pruning ratio for each epoch. This is calculated as # of current epoch - # of warmup epochs / (total epochs - # of warmup epochs -1). After the warm-up period, the prune ratio increases linearly from 0 to the final target sparsity of <b>90%</b>, ensuring smooth parameter removal over time.<p>
 						<b>General Pruning Mechanics</b>
 						</p>FLOPs are estimated as:</p>
 						<div style="padding-left: 40px;">
@@ -361,6 +365,10 @@
     						</p>A_j = Σ_{i=1..d_in} ( (1/B) · Σ_{b=1..B} (x_i^(b))² ) · |W[j,i]|</p>
 						</div>
 						<p>which measures how strongly the neuron responds to the input using its current weight vector. </p>
+						<p><b>Energy+Magnitude Combined Pruning</b></p>
+						<p>We use energy and magnitude pruning as specified above. We keep our warmup of 5 epochs, then run 10 epochs of energy (structured) pruning and 15 epochs of magnitude (unstructured) pruning. We chose to have more unstructured than structured pruning as a parallel to how biologically we only remove entire neurons early in the developmental process. We had the first round of structured pruning prunes to a final ratio of .5, while the second round of unstructured prunes to a final ratio of .8 for a combined final sparsity of .9 (the same as either method alone as specified above.)</p>
+						<p><b>Activation+Magnitude Combined Pruning</b></p>
+						<p>The same as above, except with activation-based scoring instead of energy-based scoring.</p>
 		    </div>		
 		</div>
 
@@ -372,25 +380,36 @@
 			<p></p>
 			<div class="image-row">
 				<img src="./images/table.png" width="800">
-				<div class="caption"><i>Accuracy, FLOPs, and # parameters of post-training network of different pruning methods averaged over 3 runs.</i></div>
+				<div class="caption"><i><b>Figure 1: </b>Accuracy, FLOPs, and # parameters of post-training network of different pruning methods averaged over 3 runs.</i></div>
 			</div>
+			<p>The validation accuracy of the baseline (training the target network initialized at 6168 parameters) is 19.31% after the full 30 epochs of training. The number of required FLOPs to compute this network is very small at 370,080.</p>
+			<p>Our ending parameters with pruning methods are not exact to our target of 6168 parameters due to floating-point inconsistencies, but our ending networks always have a limit of at most 6168. This ensures our pruned networks never have more capacity than the baseline.</p>
+			<p>Increasing our model capacity to start at our stated initial network at 123,480 parameters and applying magnitude pruning to have an ending network of 5559 nonzero parameters, we experience a huge increase in validation accuracy (142.9% increase). This is expected as despite the prevalence of zero weights, the dimensionality of our representation is much higher. However, this pruning makes no attempt at reducing the number of FLOPs needed to train, sitting at ~3.7 million FLOPs.</p>
+			<p>Moving on to our energy-based pruning, we experience a higher average than the baseline (20.35% increase). We expect this is because our model is implicitly applying the lottery ticket hypothesis. By pruning a large network as we go to a smaller one, we are implicitly searching for good initializations while removing the need to try many initializations or retrain. The accuracy is only about half as good as the non-structured pruning, however we reduce the number of total required FLOPs by 42.6%.</p>
+			<p>Our activation-based pruning performs slightly worse than the energy-based, but still a 12% increase over the baseline. This suggests that using the magnitude of the weights is a better scorer of neurons for pruning than the amount change of the input into that neuron.</p>
+			<p>Combining structured and unstructured pruning methods (energy+magnitude), we preserve a lot more dimensionality than fully structured pruning while maintaining a similar decrease in FLOPs from unstructured pruning. We experience a 94.6% increase over baseline, (preserving 66% of our unstructured pruning accuracy) while reducing FLOPs by 37.43% (preserving 87.9% of the fully structured decrease.) This shows that we can preserve the majority of the computation saved from fully structured pruning while also preserving a majority of the increase in accuracy from pruning down to the target with fully unstructured pruning.</p>
+			<p>Instead combining activation+magnitude, we experience slightly better accuracy with the same changes in efficiency. This suggests that either the difference between energy or activation observed earlier is not significant, or activation-based pruning is more effective in early epochs.</p>
+			<p></p>
 			<!-- Image 1 + caption -->
 			<div class="image-row">
 				<img src="./images/accuracies.png" width="800">
-				<div class="caption"><i>Training/validation accuracies and sparsity of one training of different pruning methods over 30 epochs.</i></div>
+				<div class="caption"><i><b>Figure 2: </b>Training/validation accuracies and sparsity of one training of different pruning methods over 30 epochs.</i></div>
 			</div>
+			<p>We observe that the sparsity increases very smoothly with magnitude pruning, as we are picking individual weights to zero. The sparsity jumps a lot more with unstructured pruning, as we remove entire swathes of weights at once at different dimensionalities.</p>
+			<p>The difference in seperation between the training and validation accuracy lines can be observed across methods. The seperation is greatest in magnitude pruning, representing how the greater dimensionality and representational power allows for the model to model the training data better and lag on the generalization. The very close lines in the purely structured pruning show the lacking representationality and the subsequent underfitting. The small gap between the two in the combined pruning exhibits how the representationality is smaller than the unstructured pruning but greater than the pure structured pruning.</p>
 
 			<!-- Image 2 + caption -->
 			<div class="image-row">
 				<img src="./images/flops.png" width="600">
-				<div class="caption"><i>FLOPs at each epoch of one training of different pruning methods.</i></div>
+				<div class="caption"><i><b>Figure 3:</b>FLOPs at each epoch of one training of different pruning methods.</i></div>
 			</div>
+			<p>This graph exhibits likely why our combined method is effective. We keep the part of the training loop where the number of FLOPs decreases rapidly, but cut it off when the number of FLOPs reduced begins to plateau. This is because the number of FLOPs saved with each neuron cut decreases as the dimensionality of our model reduces, which shows the tradeoff that stopping earlier can preserve a large amount of representation while maintaining most of the sparsity.</p>
 			<!-- Image 3 + caption -->
 			<div class="image-row">
 				<img src="./images/neuronsurvival.png" width="800">
-				<div class="caption"><i>Neuron magnitude at each epoch of one training of different pruning methods.</i></div>
+				<div class="caption"><i><b>Figure 4:</b> Neuron importance at each epoch of one training of different pruning methods.</i></div>
 			</div>
-		</div>
+			<p>This shows a similar story to Figure 3, where in combined pruning, once most of the neurons become very important, we stop structured pruning. </p>
 
 		<div class="margin-right-block"></div>
 	</div>
@@ -405,7 +424,6 @@
 						<p>We have severely bottlenecked our baseline in order to compare the effects of pruning to constraints. Our representational capability at two dimensions is very weak, and thus shows a poor performance baseline (~20%). Similarly, our training and validation accuracies are very close together, suggesting we are underfitting.</p>
 						<p>Our difference in performance between energy and activation-based pruning is small, and would require more runs to verify.</p>
 						<p>Due to the presence of effects such as the lottery ticket hypothesis, we should retrain the model more than three times each in order to get true observations, especially as with the tiny number of parameters individual initial initializations may have a large impact on the outcome.</p>
-						<p>Time constraints also limited our ability to test additional biological mechanisms, to vary architectural choices, or to perform deeper analyses of representation stability.</p>
 						<p>We have used a model implemented from ground-up, limiting the significance of our research on state-of-the-art models.</p>
 						<p>Overall, these limitations mean that our findings should be interpreted as a start, and future work with larger models, more varied datasets, and greater computational resources would help determine how these biologically inspired methods can be applied.</p>
             <p></p>
@@ -417,6 +435,9 @@
 				</div>
 		    <div class="main-content-block">
 						<h1>Future</h1>
+						<p>Future work could include testing the optimal ratio of structured to unstructured pruning over the total epochs. A deeper comparision of during-training pruning versus one-shot pruning would also be helpful.</p>
+						<p>Additional biological mechanisms could be tested as scorers, such as Hebbian theory, which involves computing cross-activation scores between neurons.</p>
+						<p>It would be good to test on more state-of-the-art models.</p>
             <p></p>
 		    </div>
 		</div>
