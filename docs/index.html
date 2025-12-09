@@ -400,13 +400,25 @@
 				</div>
 		    <div class="main-content-block">
 						<h1>Limitations</h1>
-						<p>This study also has several limitations that place constraints on the conclusions we can make. Our experiments rely on small models and datasets such as CIFAR-10, which have limited resolution and a small number of categories. These datasets do not fully capture the complexity of large-scale vision tasks, so pruning behavior may differ on more challenging benchmarks. </p>
-						<p>All experiments were run in Google Colab on a single T4 GPU, which limited the range of capability we could test and hyperparameters we could explore.</p>
-						<p>We have severely bottlenecked our baseline in order to compare the effects of pruning to constraints. Our representational capability at two dimensions is very weak, and thus shows a poor performance baseline (~20%). Similarly, our training and validation accuracies are very close together, suggesting we are underfitting.</p>
-						<p>Our difference in performance between energy and activation-based pruning is small, and would require more runs to verify.</p>
-						<p>Due to the presence of effects such as the lottery ticket hypothesis, we should retrain the model more than three times each in order to get true observations, especially as with the tiny number of parameters individual initial initializations may have a large impact on the outcome.</p>
-						<p>Time constraints also limited our ability to test additional biological mechanisms, to vary architectural choices, or to perform deeper analyses of representation stability.</p>
-						<p>We have used a model implemented from ground-up, limiting the significance of our research on state-of-the-art models.</p>
+						<p>This study also has several limitations that place constraints on the conclusions we can make.
+							<ul>
+								<li><b>Datasets</b>: Our experiments rely on small models and datasets such as CIFAR-10, which have limited resolution and a small number of categories. These datasets do not fully capture the complexity of large-scale vision tasks, so pruning behavior may differ on more challenging benchmarks. </li>
+								<br>
+								<li><b>Compute Constraints</b>: All experiments were run in Google Colab on a single T4 GPU, which limited the range of capability we could test and hyperparameters we could explore.</li>
+								<br>
+								<li><b>Constrained Baseline:</b> We have severely bottlenecked our baseline in order to compare the effects of pruning to constraints. Our representational capability at two dimensions is very weak, and thus shows a poor performance baseline (~20%). Similarly, our training and validation accuracies are very close together, suggesting we are underfitting. Our difference in performance between energy and activation-based pruning is small, and would require more runs to verify.</li>
+							<br>
+							<li><b>Limited Training Trials:</b> Due to the presence of effects such as the lottery ticket hypothesis, we should retrain the model more than three times each in order to get true observations, especially as with the tiny number of parameters individual initial initializations may have a large impact on the outcome.</li>
+							<br>
+							<li><b>Time Constraints:</b> Time limited our ability to test additional biological mechanisms, to vary architectural choices, or to perform deeper analyses of representation stability.</li>
+								<br>
+								<li><b>Model Implementation:</b> We have used a model implemented from ground-up, limiting the significance of our research on state-of-the-art models.</li>
+							</ul>
+
+
+						<p></p>
+
+
 						<p>Overall, these limitations mean that our findings should be interpreted as a start, and future work with larger models, more varied datasets, and greater computational resources would help determine how these biologically inspired methods can be applied.</p>
             <p></p>
 		    </div>
