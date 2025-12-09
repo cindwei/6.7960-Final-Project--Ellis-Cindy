@@ -314,7 +314,7 @@
 					<li><b>structured energy-based pruning</b>, which removes entire neurons based on the average squared weight magnitude </li>
 					<li><b>structured activation-based pruning</b>, which removes entire neurons based on their average activation strength during training </li>
 				</ul>
-				<p> We compared two ways (energy and activation) of scoring neurons for structured pruning, inspired by how the brain considers both ATP usage and activation frequency.</p>
+				<p> We compared two ways (energy and activation) of scoring neurons for structured pruning, inspired by how the brain considers both metabolic cost (ATP usage) and activation frequency.</p>
 				<p>These choices reflect the two major forms of pruning observed in the brain and allow us to test whether combining structured and unstructured mechanisms during training yields better results than either method alone
 					<span class="citation">[7]
   						<span class="citation-popup">
@@ -400,14 +400,14 @@
   					</span>
 				</span>. </p>
 
-				</p>Dynamic pruning during training has also been explored but less extensively. Methods such as SET or RigL either add back in weights or limit the number of gradient updates, but does not attempt to alter the dimensionality of the model throughout training. 
+				</p>Dynamic pruning during training has also been explored but less extensively. Methods such as SET or RigL either add back in weights or limit the number of gradient updates, but do not attempt to alter the dimensionality of the model throughout training. 
 				<span class="citation">[5]
   					<span class="citation-popup">
     					<b>Rigging the Lottery: Making All Tickets Winners</b><br>
     						Evci, U., Gale, T., Menick, J., Castro, P. S., & Elsen, E. (2019). arXiv:1911.11134.
   					</span>
 				</span>. </p>
-				Standardized evaluators such as ShrinkBench ask for masks for the model's weight tensors, but does not intrinsically allow for a way to alter the dimensionality for true structured pruning
+				Standardized evaluators such as ShrinkBench ask for masks for the model's weight tensors, but do not intrinsically allow for a way to alter the dimensionality for true structured pruning
 				<span class="citation">[6]
  					 <span class="citation-popup">
     					<b>What is the State of Neural Network Pruning?</b><br>
@@ -465,7 +465,7 @@
 							<li>a classification layer mapping 2 → 10.</li>
 						</ul>
 						<p>This architecture contains 6168 parameters.<p>
-						</p>The starting network (before pruning) was calculated in order for pruning to produce the target network size after the fixed training schedule. </p>
+						</p>The starting network parameters (before pruning) were calculated in order for pruning to produce the target network size after the fixed training schedule. </p>
 						<p>The initial network consists of:</p>
 						<ul>
 							<li>an input layer of input size (3072) → 20</li>
@@ -498,7 +498,7 @@
 						<b>Neuron and Weight Importance</b>
 						<ul>
 							<li>Unstructured pruning ranks individual weights by absolute value.</li>
-							<li>Structured pruning ranks neurons by the L1 norm of their weights.</li>
+							<li>Structured pruning ranks neurons by the L1 norm or mean square of their weights.</li>
 							<li>Importance scores are recalculated after every epoch during the pruning phase.</li>
 						</ul>
 						</p><b>Masking Mechanism</b></p>
@@ -576,7 +576,7 @@
 						</div>
 
 						<p>
-							which measures how strongly the neuron responds to the input using its current weight vector.
+							which measures how strongly the neuron responds to the input using input x current weight vector.
 						</p>
 						<p><b>Energy + Magnitude Combined Pruning</b></p>
 						<p>
@@ -590,7 +590,7 @@
 
 						<p>
 						We had the first round of structured pruning pruned to a final ratio of 0.5,
-						while the second round of unstructured pruned to a final ratio of 0.8
+						while the second round of unstructured pruned to a final ratio of 0.8 (on the remaining parameters)
 						for a combined final sparsity of 0.9 (the same as either method alone
 						as specified above.)
 						</p>
@@ -633,7 +633,7 @@
 				</figcaption>
 			</figure>
 			<p>We observe that the sparsity increases very smoothly with magnitude pruning, as we are picking individual weights to zero. The sparsity jumps a lot more with unstructured pruning, as we remove entire swathes of weights at once at different dimensionalities.</p>
-			<p>The difference in seperation between the training and validation accuracy lines can be observed across methods. The seperation is greatest in magnitude pruning, representing how the greater dimensionality and representational power allows for the model to model the training data better and lag on the generalization. The very close lines in the purely structured pruning show the lacking representationality and the subsequent underfitting. The small gap between the two in the combined pruning exhibits how the representationality is smaller than the unstructured pruning but greater than the pure structured pruning.</p>
+			<p>The difference in separation between the training and validation accuracy lines can be observed across methods. The seperation is greatest in magnitude pruning, representing how the greater dimensionality and representational power allows for the model to model the training data better and lag on the generalization. The very close lines in the purely structured pruning show the lacking representational capacity and the subsequent underfitting. The small gap between the two in the combined pruning exhibits how the representationality is smaller than the unstructured pruning but greater than the pure structured pruning.</p>
 
 			<!-- Image 3 + caption -->
 			<figure style="text-align: center; margin: 20px 0;">
@@ -674,7 +674,7 @@
 								<br>
 								<li><b>Model Implementation:</b> We have used a model implemented from ground-up, limiting the significance of our research on state-of-the-art models.</li>
 								<br>
-								<li><b>Baseline Comparision:</b> Lacking established structured during-training MLP pruning methods makes it more difficult to properly compare and benchmark our method to existing methods. </li>
+								<li><b>Baseline Comparison:</b> Lacking established structured during-training MLP pruning methods makes it more difficult to properly compare and benchmark our method to existing methods. </li>
 							</ul>
 
 
@@ -694,8 +694,8 @@
 				</div>
 		    <div class="main-content-block">
 						<h1>Future Work</h1>
-						<p>Future work could include testing the optimal ratio of structured to unstructured pruning over the total epochs. It would also be helpful to have a deeper comparision of during-training pruning versus one-shot pruning. We could experiement with additional biologically inspired scoring rules such as the Hebbian theory, which looks at how pairs of neurons activate together. Finally, it would good to try these methods on larger, state-of-the-art models to see how well the ideas scale.  </p>
-						<p>Exploring specialized sparse matrix multiplication techniques could make use of the zeroed magnitude pruning weights as well to further reduce FLOPs or make a comparision of FLOP reduction between structured and unstructured pruning. A comparision of structured+unstructured pruning with pure unstructured pruning with sparse matrix acceleration would be helpful.</p>
+						<p>Future work could include testing the optimal ratio of structured to unstructured pruning over the total epochs. It would also be helpful to have a deeper comparison of during-training pruning versus one-shot pruning. We could experiment with additional biologically inspired scoring rules such as the Hebbian theory, which looks at how pairs of neurons activate together. Finally, it would good to try these methods on larger, state-of-the-art models to see how well the ideas scale.  </p>
+						<p>Exploring specialized sparse matrix multiplication techniques could make use of the zeroed magnitude pruning weights as well to further reduce FLOPs or make a comparison of FLOP reduction between structured and unstructured pruning. A comparison of structured+unstructured pruning with pure unstructured pruning with sparse matrix acceleration would be helpful.</p>
 
 		    </div>
 
